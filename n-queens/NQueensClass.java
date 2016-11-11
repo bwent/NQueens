@@ -1,9 +1,12 @@
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.lang.Integer;
 
 
 public class NQueensClass {
+
 
    	private int MAX_STEPS;
     private int N;
@@ -13,16 +16,15 @@ public class NQueensClass {
 		// only print board if less than 20 x 20
 		private static final int PRINT_CUTOFF = 20;
 
-    //use these booleans to choose an algorithm and turn on/off smart_start and first_better
+    private static final double RANDOM_PROB = 0.3;
+
+    // //use these booleans to choose an algorithm and turn on/off smart_start and first_better
     private boolean smartStart = false;
     private boolean firstBetter = false;
-    private boolean greedy = false;
-    private boolean basic = true;
-    private boolean rando = false;
 
     Random random = new Random ();
 
-    public NQueensClass(int size, int maxSteps){
+    public NQueensClass(int size, int maxSteps, int approach, int tweak){
 
 				N = size;
 				MAX_STEPS = maxSteps;
@@ -43,17 +45,34 @@ public class NQueensClass {
 					printBoard(board);
 				}
 
-        if (greedy) {
-            int [][] solvedBoard = minConflictsGreedy(board, MAX_STEPS);
+        if (tweak == 1) {
+          System.out.print("Using smart-start tweak, ");
+          smartStart = true;
+        } else if (tweak == 2) {
+          System.out.print("Using first-better tweak, ");
+          firstBetter = true;
         }
-        else if (basic) {
+
+        if (approach == 1) {
+            System.out.println("solving with basic approach...");
             int [][] solvedBoard = minConflictsBasic(board, MAX_STEPS);
         }
-        else if (rando) {
-            int [][] solvedBoard = minConflictsRandom(board, MAX_STEPS);
+        else if (approach == 2) {
+          System.out.println("solving with greedy approach...");
+            int [][] solvedBoard = minConflictsGreedy(board, MAX_STEPS);
         }
+        else if (approach == 3) {
+            System.out.println("solving with random approach...");
+            int [][] solvedBoard = minConflictsRandom(board, MAX_STEPS);
+        } else {
+          System.out.println("Invalid approach.");
+          System.exit(1);
+        }
+
+
         long endTime = System.currentTimeMillis();
         System.out.println("Total execution time in milliseconds: " + (endTime - startTime));
+
 
     }
 
@@ -172,7 +191,7 @@ public class NQueensClass {
             int minConRow = 0;
             //if the board is already solved, stop
             if (validBoard(currBoard)){
-                System.out.println("NUMBER OF STEPS with basic approach: " + i);
+                System.out.println("Solved with basic approach in " + i + " steps.");
 								if (N < PRINT_CUTOFF) {
 									printBoard(currBoard);
 								}
@@ -209,6 +228,7 @@ public class NQueensClass {
             queenRows[randomQueenCol] = minConRow;
 
         }
+        System.out.println("Basic approach maxed out at " + maxSteps + " steps.");
         return currBoard;
 
     }
@@ -226,7 +246,7 @@ public class NQueensClass {
 
             //if the board is already solved, stop
             if (validBoard(currBoard)){
-                System.out.println("NUMBER OF STEPS with greedy approach: " + i);
+                System.out.println("Solved with greedy approach in " + i + " steps.");
 								if (N < PRINT_CUTOFF) {
 									printBoard(currBoard);
 								}
@@ -286,6 +306,7 @@ public class NQueensClass {
             queenRows[minCol] = minRow;
 
         }
+        System.out.println("Greedy approach maxed out at " + maxSteps + " steps.");
         return currBoard;
     }
 
@@ -299,7 +320,7 @@ public class NQueensClass {
             int minConRow = 0;
             //if the board is already solved, stop
             if (validBoard(currBoard)){
-                System.out.println("NUMBER OF STEPS with random approach: " + i);
+                System.out.println("Solved with random approach in " + i + " steps.");
 								if (N < PRINT_CUTOFF) {
 									printBoard(currBoard);
 								}
@@ -324,7 +345,7 @@ public class NQueensClass {
             double rand = Math.random();
 
             //move the queen to a random row with a probability of 0.3
-            if (rand < 0.3){
+            if (rand < RANDOM_PROB){
 
                 int randRow = random.nextInt(N);
                 currBoard[randomQueenRow][randomQueenCol] = 0;
@@ -350,6 +371,7 @@ public class NQueensClass {
             }
 
         }
+        System.out.println("Random approach maxed out at " + maxSteps + " steps.");
         return currBoard;
 
     }

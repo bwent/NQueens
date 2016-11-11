@@ -1,5 +1,5 @@
 
-import java.lang.Integer;
+
 
 public class NQueensMain {
 
@@ -8,20 +8,31 @@ public class NQueensMain {
 
 		int size = 0;
 		int maxSteps = 0;
+		int approach = 0;
+		int tweak = 0;
 
-		if (args.length != 0) {
-	    try {
+		if (args.length < 3) {
+			System.err.println("Specify a size, maximum number of steps, and approach.");
+			System.exit(1);
+		}
 
-	        size = Integer.parseInt(args[0]);
-					maxSteps = Integer.parseInt(args[1]);
+		try {
+			size = Integer.parseInt(args[0]);
+			maxSteps = Integer.parseInt(args[1]);
+			approach = Integer.parseInt(args[2]);
 
-	    } catch (NumberFormatException e) {
-	        System.err.println("Argument" + args[0] + " must be an integer.");
-	        System.exit(1);
-	    }
-	}
+			if (args.length == 4) {
+				tweak = Integer.parseInt(args[3]);
+			}
 
-		new NQueensClass(size, maxSteps);
+
+		} catch (NumberFormatException e) {
+			System.err.println("Numbers must be integers.");
+			System.exit(1);
+		}
+
+
+		new NQueensClass(size, maxSteps, approach, tweak);
 
 	}
 
