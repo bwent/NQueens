@@ -24,7 +24,7 @@ BASIC approach: SMART-START and FIRST-BETTER.
 
 ## Code Modifications
 
-    Modifications were made to NQueensClass.java to implement all 5 approaches.
+Modifications were made to NQueensClass.java to implement all 5 approaches.
 
 ## Tests
 
